@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Events</h1>
+        <a href="{% url 'events:event_create' %}" class="btn btn-primary">Create New Event</a>
+    </div>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" id="search" name="search" class="form-control" placeholder="Search events..." value="{{ filter_params.search }}">
+            </div>
+            <div class="col-md-3">
+                <label for="campus" class="form-label">Campus</label>
+                <select id="campus" name="campus" class="form-select">
+                    <option value="">All Campuses</option>
+                    {% for value, label in campus_choices %}
+                        <option value="{{ value }}" {% if filter_params.campus == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for value, label in category_choices %}
+                        <option value="{{ value }}" {% if filter_params.category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="date_range" class="form-label">Date Range</label>
+                <select id="date_range" name="date_range" class="form-select">
+                    <option value="">All Dates</option>
+                    <option value="today" {% if filter_params.date_range == 'today' %}selected{% endif %}>Today</option>
+                    <option value="week" {% if filter_params.date_range == 'week' %}selected{% endif %}>This Week</option>
+                    <option value="month" {% if filter_params.date_range == 'month' %}selected{% endif %}>This Month</option>
+                    <option value="upcoming" {% if filter_params.date_range == 'upcoming' %}selected{% endif %}>Upcoming</option>
+                    <option value="past" {% if filter_params.date_range == 'past' %}selected{% endif %}>Past Events</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12 d-flex justify-content-end gap-2">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+                <a href="{% url 'events:event_list' %}" class="btn btn-secondary">Clear Filters</a>
+            </div>
+        </div>
+    </form>
+
+    <div class="row">
+        {% for event in events %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    {% if event.image %}
+                        <div class="card-img-container">
+                            <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Date: {{ event.date|date:"F j, Y" }}<br>
+                                Location: {{ event.location }}
+                            </small>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'events:event_detail' pk=event.pk %}" class="btn btn-primary">View Details</a>
+                            <div>
+                                <a href="{% url 'events:event_update' pk=event.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="{% url 'events:event_delete' pk=event.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p>No events available.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+{% endblock %} 

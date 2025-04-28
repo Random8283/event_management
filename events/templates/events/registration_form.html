@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Register for Event - Event Management System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Register for Event</h1>
+    
+    {% if event %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        Date: {{ event.date|date:"F j, Y" }} at {{ event.time|time:"g:i A" }}<br>
+                        Location: {{ event.location }}
+                    </small>
+                </p>
+            </div>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Register</button>
+        <a href="{% if event %}{% url 'events:event_detail' event.pk %}{% else %}{% url 'events:event_list' %}{% endif %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %} 
