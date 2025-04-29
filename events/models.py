@@ -5,6 +5,13 @@ from PIL import Image
 
 # Create your models here.
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+
 class Event(models.Model):
     CAMPUS_CHOICES = [
         ('cochran', 'Cochran Campus'),
@@ -13,7 +20,7 @@ class Event(models.Model):
         ('macon', 'Macon Campus'),
         ('warner robins', 'Warner Robins Campus'),
         ('online', 'Online'),
-        ('other', 'Other'),
+        ('n/a', 'N/A'),
     ]
     EVENT_TYPES = [
         ('club', 'Club'),
@@ -22,11 +29,12 @@ class Event(models.Model):
         ('cultural', 'Cultural'),
         ('athletic', 'Athletic'),
         ('workshop', 'Workshop'),
+        ('volunteer', 'Volunteer'),
     ]
     title = models.CharField(max_length=200)
     description = models.TextField()
     date = models.DateField()
-    time = models.TimeField()
+    time = models.TimeField(default=time(12, 0))  # Default to noon
     location = models.CharField(max_length=200)
     campus = models.CharField(max_length=30, choices=CAMPUS_CHOICES, default='macon')
     category = models.CharField(max_length=10, choices=EVENT_TYPES, default='main')

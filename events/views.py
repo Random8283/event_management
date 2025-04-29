@@ -223,18 +223,13 @@ class RegistrationDeleteView(LoginRequiredMixin, AdminRequiredMixin, DeleteView)
         messages.success(request, 'Registration deleted successfully.')
         return HttpResponseRedirect(reverse_lazy('events:event_detail', kwargs={'pk': event_pk}))
 
-class EventDeregisterView(LoginRequiredMixin, View):
+class EventUnregisterView(LoginRequiredMixin, View):
     def post(self, request, pk):
         event = get_object_or_404(Event, pk=pk)
-        registration = Registration.objects.filter(event=event, user=request.user).first()
-        
-        if registration:
-            registration.delete()
-            messages.success(request, 'You have been successfully deregistered from the event.')
-        else:
-            messages.error(request, 'You are not registered for this event.')
-        
-        return redirect('events:event_detail', pk=pk)
+        registration = get_object_or_404(Registration, event=event, user=request.user)
+        registration.delete()
+        messages.success(request, 'You have been successfully unregistered from the event.')
+        return redirect('events:event_detail', pk=event.pk)
 
 def event_list(request):
     events = Event.objects.all()
