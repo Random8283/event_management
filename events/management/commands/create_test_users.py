@@ -16,7 +16,7 @@ class Command(BaseCommand):
             }
         )
         if created:
-            user.set_password('userpass123')
+            user.set_password('userpass')
             user.save()
             UserProfile.objects.create(user=user, is_admin=False)
             self.stdout.write(self.style.SUCCESS('Regular user created successfully'))
