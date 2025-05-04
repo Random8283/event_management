@@ -39,13 +39,18 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ```
+6. Load dummy events
+We’ve included sample events for testing!
+```bash
+python manage.py loaddata fixtures/dummy_events.json
 
-6. Run the development server:
+
+7. Run the development server:
 ```bash
 python manage.py runserver
 ```
 
-7. Access the application at `http://127.0.0.1:8000/`
+8. Access the application at `http://127.0.0.1:8000/`
 
 ## Project Structure
 
@@ -58,6 +63,11 @@ python manage.py runserver
   - `static/` - Static files (CSS, JS, images)
   - `templatetags/` - Custom template tags
 
+- Any user who signs up can view ALL events.
+- Any user can register for ANY event, regardless of organizer.
+- Admin users (staff=True) can create, update, delete events.
+
+
 ## Contributing
 
 1. Fork the repository
@@ -65,6 +75,16 @@ python manage.py runserver
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
+
+📝 Notes
+Dummy events’ organizer is set to user ID 1 (first superuser created)
+
+You can see loaded events in Django admin → Events section
+
+Static files collected in /staticfiles/ (run python manage.py collectstatic if needed for deployment)
+
+
+
 
 ## License
 

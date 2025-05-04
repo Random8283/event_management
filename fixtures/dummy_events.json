@@ -1,0 +1,44 @@
+[
+  {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "title": "Movie Night: Spider-Man Across the Spider-Verse",
+      "description": "Free popcorn! Bring your friends and enjoy the movie.",
+      "date": "2025-05-12",
+      "time": "22:00:00",
+      "location": "Campus Theater",
+      "campus": "cochran",
+      "category": "entertainment",
+      "organizer": 1
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "title": "Campus Karaoke Night",
+      "description": "Show off your singing skills and win prizes!",
+      "date": "2025-05-15",
+      "time": "19:00:00",
+      "location": "Student Center",
+      "campus": "macon",
+      "category": "music",
+      "organizer": 1
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+      "title": "Career Fair 2025",
+      "description": "Meet with top employers and explore career opportunities.",
+      "date": "2025-05-20",
+      "time": "10:00:00",
+      "location": "Campus Hall",
+      "campus": "cochran",
+      "category": "career",
+      "organizer": 2
+    }
+  }
+]
